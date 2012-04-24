@@ -55,6 +55,15 @@ There is one mandatory parameter: I<endpoint>.
 Optional parameters are: I<storage_driver>, I<storage_uri>, I<core_modules>, I<core_announce_endpoint> and I<core_announce_interval>. There's also a boolean I<verbose> option.
 
 =cut
+
+sub start_impl {
+    my $self = shift;
+    unless (-d '/var/run/cocaine') {
+        mkdir('/var/run/cocaine') or die "Can't create dir: $!";
+    }
+    $self->SUPER::start_impl(@_);
+}
+
 sub new {
     my $class = shift;
 
@@ -69,7 +78,7 @@ sub new {
     });
 
     my $bin = [
-        'cocained',
+        '/usr/bin/cocained',
         $params->{endpoint},
         ($params->{verbose} ? '--verbose' : ()),
         map {
