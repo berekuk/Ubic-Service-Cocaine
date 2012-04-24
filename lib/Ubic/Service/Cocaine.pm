@@ -33,6 +33,7 @@ use warnings;
 use parent qw(Ubic::Service::SimpleDaemon);
 
 use Params::Validate qw(:all);
+use ZeroMQ qw(:all);
 
 my %opt2arg = ();
 for my $arg (qw(
@@ -78,10 +79,12 @@ sub new {
         } keys %opt2arg,
     ];
 
-    return $class->SUPER::new({
+    my $self = $class->SUPER::new({
         bin => $bin,
         user => 'cocaine',
     });
+    $self->{cocaine} = $params;
+    return $self;
 }
 
 sub start_impl {
@@ -90,6 +93,22 @@ sub start_impl {
         mkdir('/var/run/cocaine') or die "Can't create dir: $!";
     }
     $self->SUPER::start_impl(@_);
+}
+
+sub status_impl {
+    my $self = shift;
+
+    {
+        my $context = ZeroMQ::Context->new;
+        my $sock = $context->socket(ZMQ_REP);
+        $sock->bind($self->{cocaine}{endpoint});
+        $sock->send_as(json => { version => 2, action => 'info' });
+        my $response = $sock->recv_as('json');
+        use Data::Dumper;
+        warn Dumper $response;
+    }
+
+    return $self->SUPER::status_impl(@_);
 }
 
 =head1 TODO
