@@ -56,14 +56,6 @@ Optional parameters are: I<storage_driver>, I<storage_uri>, I<core_modules>, I<c
 
 =cut
 
-sub start_impl {
-    my $self = shift;
-    unless (-d '/var/run/cocaine') {
-        mkdir('/var/run/cocaine') or die "Can't create dir: $!";
-    }
-    $self->SUPER::start_impl(@_);
-}
-
 sub new {
     my $class = shift;
 
@@ -90,6 +82,14 @@ sub new {
         bin => $bin,
         user => 'cocaine',
     });
+}
+
+sub start_impl {
+    my $self = shift;
+    unless (-d '/var/run/cocaine') {
+        mkdir('/var/run/cocaine') or die "Can't create dir: $!";
+    }
+    $self->SUPER::start_impl(@_);
 }
 
 =head1 TODO
