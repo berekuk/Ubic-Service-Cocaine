@@ -59,7 +59,7 @@ Optional parameters are: I<storage_driver>, I<storage_uri>, I<core_modules>, I<c
 sub start_impl {
     my $self = shift;
     unless (-d '/var/run/cocaine') {
-    mkdir('/var/run/cocaine') or die "Can't create dir: $!";
+        mkdir('/var/run/cocaine') or die "Can't create dir: $!";
     }
     $self->SUPER::start_impl(@_);
 }
