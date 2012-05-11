@@ -30,6 +30,7 @@ Daemon's user is always B<cocaine>.
 use strict;
 use warnings;
 
+
 use parent qw(Ubic::Service::SimpleDaemon);
 
 use Params::Validate qw(:all);
@@ -41,6 +42,7 @@ for my $arg (qw(
     core:modules
     core:announce-endpoint
     core:announce-interval
+    core:port-range
 )) {
     my $opt = $arg;
     $opt =~ s/:/_/g;
@@ -52,7 +54,7 @@ for my $arg (qw(
 
 There is one mandatory parameter: I<endpoint>.
 
-Optional parameters are: I<storage_driver>, I<storage_uri>, I<core_modules>, I<core_announce_endpoint> and I<core_announce_interval>. There's also a boolean I<verbose> option.
+Optional parameters are: I<storage_driver>, I<storage_uri>, I<core_modules>, I<core_announce_endpoint>, I<core_port_range> and I<core_announce_interval>. There's also a boolean I<verbose> option.
 
 =cut
 
@@ -101,5 +103,3 @@ TCP check would be useful.
 User and other SimpleDaemon parameters should be customizable.
 
 =cut
-
-1;
