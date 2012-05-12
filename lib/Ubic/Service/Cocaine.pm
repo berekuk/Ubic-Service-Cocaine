@@ -30,7 +30,6 @@ Daemon's user is always B<cocaine>.
 use strict;
 use warnings;
 
-
 use parent qw(Ubic::Service::SimpleDaemon);
 
 use Params::Validate qw(:all);
@@ -103,3 +102,5 @@ TCP check would be useful.
 User and other SimpleDaemon parameters should be customizable.
 
 =cut
+1;
+
