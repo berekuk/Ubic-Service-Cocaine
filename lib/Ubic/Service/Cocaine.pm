@@ -1,7 +1,4 @@
 package Ubic::Service::Cocaine;
-BEGIN {
-  $Ubic::Service::Cocaine::VERSION = '1.00';
-}
 
 # ABSTRACT: run cocaine as Ubic service
 
