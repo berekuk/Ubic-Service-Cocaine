@@ -30,6 +30,10 @@ Daemon's user is always B<cocaine>.
 use strict;
 use warnings;
 
+use Ubic::Result qw(result);
+
+use Ubic::Daemon qw(:all);
+
 use parent qw(Ubic::Service::SimpleDaemon);
 
 use Params::Validate qw(:all);
@@ -91,6 +95,14 @@ sub start_impl {
         mkdir('/var/run/cocaine') or die "Can't create dir: $!";
     }
     $self->SUPER::start_impl(@_);
+}
+
+sub reload {
+    my ( $self ) = @_;
+    my $status = check_daemon($self->pidfile) or die result('not running');
+    kill HUP => $status->pid;
+
+    return 'reloaded';
 }
 
 =head1 TODO
