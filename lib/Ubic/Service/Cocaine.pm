@@ -30,6 +30,8 @@ Daemon's user is always B<cocaine>.
 use strict;
 use warnings;
 
+use Ubic::Result qw(result);
+
 use Ubic::Daemon qw(:all);
 
 use parent qw(Ubic::Service::SimpleDaemon);
@@ -97,7 +99,7 @@ sub start_impl {
 
 sub reload {
     my ( $self ) = @_;
-    my $status = check_daemon($self->pidfile) or die 'not running';
+    my $status = check_daemon($self->pidfile) or die result('not running');
     kill HUP => $status->pid;
 
     return 'reloaded';
